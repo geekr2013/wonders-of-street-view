@@ -91,19 +91,22 @@
 
 ### 2-1. 저장소 클론 (2분)
 
-**Windows (Git Bash):**
+**⚠️ Windows 사용자: Git Bash 사용 필수!**
+
+**Git Bash 열기:**
+```
+시작 메뉴 → "Git Bash" 검색 → 실행
+```
+
+**Git Bash / Mac / Linux:**
 ```bash
 cd ~/Desktop
 git clone https://github.com/geekr2013/wonders-of-street-view.git
 cd wonders-of-street-view
 ```
 
-**Mac/Linux:**
-```bash
-cd ~/Desktop
-git clone https://github.com/geekr2013/wonders-of-street-view.git
-cd wonders-of-street-view
-```
+**❌ Git 인식 안 되면?**
+→ **`GIT_SETUP_WINDOWS.md`** 파일 참조! (상세 해결법)
 
 ---
 
@@ -136,8 +139,19 @@ cp ~/Downloads/client_secret_*.json ./client_secrets.json
 
 ### 2-4. 인증 스크립트 실행 (5분)
 
+**Git Bash / Mac / Linux:**
 ```bash
 python3 scripts/youtube_auth.py
+```
+
+**Windows (python3 안 되면):**
+```bash
+python scripts/youtube_auth.py
+```
+
+**또는:**
+```bash
+py scripts/youtube_auth.py
 ```
 
 **실행 과정:**
