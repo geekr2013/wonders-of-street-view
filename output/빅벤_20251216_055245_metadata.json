@@ -1,0 +1,19 @@
+{
+  "location": {
+    "id": 16,
+    "name_ko": "빅벤",
+    "name_en": "Big Ben",
+    "country": "영국",
+    "city": "런던",
+    "description": "런던의 상징적인 시계탑",
+    "tags": [
+      "랜드마크",
+      "도시",
+      "건축물"
+    ]
+  },
+  "video_prompt": "A cinematic travel video of Big Ben in 런던, 영국.\nBeautiful establishing shot with smooth camera movement.\nGolden hour lighting, vibrant colors, professional travel photography style.\nShow the iconic landmarks and atmosphere of the location.\nHigh quality, 4K resolution, travel vlog aesthetic.",
+  "music_prompt": "Acoustic folk music with wanderlust feeling, guitar and ukulele, bright and optimistic, 60 seconds",
+  "created_at": "2025-12-16T05:52:45.377416",
+  "filename": "빅벤_20251216_055245"
+}

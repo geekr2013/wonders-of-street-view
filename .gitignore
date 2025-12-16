@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# 환경 변수
+.env
+.env.local
+
+# 유튜브 API 인증
+client_secrets.json
+token.pickle
+
+# 생성된 파일 (크기가 클 수 있음)
+output/*.mp4
+output/*.mp3
+output/*.wav
+
+# 메타데이터는 유지
+!output/*_metadata.json
+
+# 로그 파일
+logs/*.log
+logs/*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 임시 파일
+tmp/
+temp/
+*.tmp
