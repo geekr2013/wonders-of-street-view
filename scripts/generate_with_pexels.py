@@ -164,17 +164,36 @@ def compose_final_shorts(
     - (선택) 배경음악 합성
     """
     
-    # 자막 스타일
+    # 자막 스타일 (학교안심 여행체 사용)
+    # 폰트 경로 우선순위: 1) 저장소 폰트, 2) 시스템 폰트, 3) 기본 폰트
+    font_paths = [
+        str(BASE_DIR / "fonts" / "HakgyoansimYeohaengOTFR.otf"),  # 저장소 폰트 (1순위)
+        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",  # 나눔고딕 (2순위)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # 기본 폰트 (3순위)
+    ]
+    
+    # 존재하는 첫 번째 폰트 사용
+    font_file = None
+    for font_path in font_paths:
+        if Path(font_path).exists():
+            font_file = font_path
+            print(f"✅ 폰트 사용: {Path(font_path).name}")
+            break
+    
+    if not font_file:
+        font_file = font_paths[-1]  # 기본 폰트
+        print(f"⚠️  폰트를 찾을 수 없어 기본 폰트 사용: {Path(font_file).name}")
+    
     subtitle_style = (
         f"drawtext="
         f"text='{subtitle_text}':"
-        f"fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:"
-        f"fontsize=60:"
+        f"fontfile={font_file}:"
+        f"fontsize=70:"  # 크기 70으로 증가 (가독성 향상)
         f"fontcolor=white:"
-        f"borderw=3:"
+        f"borderw=4:"  # 테두리 4로 증가
         f"bordercolor=black:"
         f"x=(w-text_w)/2:"
-        f"y=100"
+        f"y=150"  # 위치 조정
     )
     
     if music_path and music_path.exists():
