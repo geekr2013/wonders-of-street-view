@@ -1,0 +1,166 @@
+name: 🌍 Daily AI Travel Shorts - Auto Upload to YouTube
+
+# 매일 자동 실행 (한국 시간 오전 9시 = UTC 0시)
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 매일 UTC 0시 (한국 오전 9시)
+  workflow_dispatch:  # 수동 실행도 가능
+
+env:
+  TZ: 'Asia/Seoul'
+
+jobs:
+  generate-and-upload:
+    name: 🎬 AI 여행 쇼츠 생성 및 유튜브 업로드
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+    # 1. 코드 체크아웃
+    - name: 📦 저장소 체크아웃
+      uses: actions/checkout@v4
+    
+    # 2. Python 환경 설정
+    - name: 🐍 Python 3.10 설정
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    # 3. 의존성 설치
+    - name: 📚 Python 패키지 설치
+      run: |
+        pip install --upgrade pip
+        pip install requests python-dotenv
+        pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+    
+    # 4. FFmpeg 설치
+    - name: 🎬 FFmpeg 설치
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y ffmpeg
+    
+    # 5. 한글 폰트 설치
+    - name: 🔤 한글 폰트 설치
+      run: |
+        sudo apt-get install -y fonts-nanum fonts-nanum-coding
+        fc-cache -fv
+    
+    # 6. 영상 생성 및 유튜브 업로드
+    - name: 🌍 영상 생성 및 유튜브 자동 업로드
+      id: upload
+      env:
+        PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        YOUTUBE_TOKEN_BASE64: ${{ secrets.YOUTUBE_TOKEN_BASE64 }}
+      run: |
+        python3 scripts/full_auto_youtube.py
+    
+    # 7. 생성된 영상을 Artifact로 백업
+    - name: 📤 영상 백업 (Artifact)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: travel-shorts-${{ github.run_number }}
+        path: |
+          output/*.mp4
+          output/*_metadata.json
+        retention-days: 7
+    
+    # 8. 성공 알림 이메일 (유튜브 링크 포함)
+    - name: 📧 성공 알림 이메일
+      if: success()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: "🎉 AI 여행 쇼츠 유튜브 업로드 완료! - #${{ github.run_number }}"
+        to: ${{ secrets.RECIPIENT_EMAIL }}
+        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
+        html_body: |
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2196F3;">🎉 유튜브 업로드 완료!</h2>
+            
+            <div style="background-color: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="color: #4CAF50; margin-top: 0;">✅ 업로드 성공</h3>
+              <p><strong>실행 번호:</strong> #${{ github.run_number }}</p>
+              <p><strong>업로드 시간:</strong> ${{ github.event.head_commit.timestamp }}</p>
+              <p><strong>장소:</strong> ${{ steps.upload.outputs.location || '랜덤 여행지' }}</p>
+            </div>
+            
+            <div style="background-color: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="color: #FF9800; margin-top: 0;">📺 유튜브에서 확인하기</h3>
+              <p>업로드된 쇼츠를 바로 확인해보세요:</p>
+              <a href="${{ steps.upload.outputs.video_url || 'https://youtube.com' }}" 
+                 style="display: inline-block; padding: 12px 24px; background-color: #FF0000; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
+                ▶️ YouTube에서 보기
+              </a>
+            </div>
+            
+            <div style="background-color: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="color: #2196F3; margin-top: 0;">📊 채널 관리</h3>
+              <ul>
+                <li>YouTube Studio에서 조회수 확인</li>
+                <li>댓글 확인 및 답변</li>
+                <li>분석 데이터 확인</li>
+              </ul>
+              <a href="https://studio.youtube.com" 
+                 style="display: inline-block; padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
+                🎬 YouTube Studio 열기
+              </a>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+            
+            <p style="color: #666; font-size: 12px; text-align: center;">
+              매일 오전 9시 자동으로 새로운 여행 쇼츠가 생성되고 업로드됩니다.<br>
+              AI Travel Shorts 자동 생성 시스템
+            </p>
+          </div>
+    
+    # 9. 실패 알림 이메일
+    - name: 📧 실패 알림 이메일
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: "❌ AI 여행 쇼츠 생성/업로드 실패 - #${{ github.run_number }}"
+        to: ${{ secrets.RECIPIENT_EMAIL }}
+        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
+        html_body: |
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #f44336;">❌ 생성 또는 업로드 실패</h2>
+            
+            <div style="background-color: #ffebee; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="color: #f44336; margin-top: 0;">⚠️ 오류 발생</h3>
+              <p><strong>실행 번호:</strong> #${{ github.run_number }}</p>
+              <p><strong>실패 시간:</strong> ${{ github.event.head_commit.timestamp }}</p>
+            </div>
+            
+            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">🔍 로그 확인</h3>
+              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" 
+                 style="display: inline-block; padding: 12px 24px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
+                🔗 로그 보기
+              </a>
+            </div>
+            
+            <p style="color: #666; font-size: 12px; text-align: center; margin-top: 30px;">
+              문제가 지속되면 GitHub Issues에 문의하세요.
+            </p>
+          </div>
+    
+    # 10. 실행 요약
+    - name: 📊 실행 요약
+      if: always()
+      run: |
+        echo "================================"
+        echo "🌍 AI 여행 쇼츠 자동화 완료"
+        echo "================================"
+        echo "실행 번호: ${{ github.run_number }}"
+        echo "상태: ${{ job.status }}"
+        echo "시간: $(date)"
+        echo "================================"
