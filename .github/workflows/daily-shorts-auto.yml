@@ -67,7 +67,7 @@ jobs:
     
     # 8. 이메일 알림 전송 (성공)
     - name: 📧 성공 알림 이메일 전송
-      if: success()
+      if: false  # 이메일 비활성화
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
@@ -119,7 +119,7 @@ jobs:
     
     # 9. 이메일 알림 전송 (실패)
     - name: 📧 실패 알림 이메일 전송
-      if: failure()
+      if: false  # 이메일 비활성화
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
