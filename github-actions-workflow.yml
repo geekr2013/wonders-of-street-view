@@ -1,0 +1,79 @@
+name: Daily AI Travel Shorts Generator
+
+# 매일 오전 9시 (한국 시간 기준 오전 9시 = UTC 0시)
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 매일 UTC 0시 = 한국 오전 9시
+  workflow_dispatch:  # 수동 실행도 가능
+
+jobs:
+  generate-shorts:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📦 코드 체크아웃
+      uses: actions/checkout@v3
+    
+    - name: 🐍 Python 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: 📚 의존성 설치
+      run: |
+        pip install -r requirements.txt
+    
+    - name: 🎬 FFmpeg 설치
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+    
+    - name: 🌍 랜덤 여행지 선택 및 메타데이터 생성
+      run: |
+        python3 scripts/auto_generate_shorts.py
+    
+    - name: 📤 메타데이터 업로드 (Artifact)
+      uses: actions/upload-artifact@v3
+      with:
+        name: travel-metadata
+        path: output/*_metadata.json
+    
+    - name: 📧 이메일 알림 전송
+      if: success()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: "🌍 AI 여행 쇼츠 생성 완료"
+        to: cogurrl@gmail.com
+        from: AI Travel Shorts Bot
+        body: |
+          새로운 여행 쇼츠가 생성되었습니다!
+          
+          GitHub Actions에서 메타데이터를 확인하세요:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        
+    - name: ❌ 실패 시 알림
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: "❌ AI 여행 쇼츠 생성 실패"
+        to: cogurrl@gmail.com
+        from: AI Travel Shorts Bot
+        body: |
+          영상 생성에 실패했습니다.
+          
+          로그를 확인하세요:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+# 참고: AI 영상/음악 생성은 외부 API 키가 필요합니다
+# GitHub Secrets에 다음을 설정하세요:
+# - SMTP_USERNAME: Gmail 이메일
+# - SMTP_PASSWORD: Gmail 앱 비밀번호
+# - AI_API_KEY: AI 영상 생성 API 키 (RunwayML, Pika Labs 등)
