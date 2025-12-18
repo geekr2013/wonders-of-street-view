@@ -110,9 +110,38 @@ def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path
         font_file = font_paths[-1]  # 기본 폰트
         print(f"⚠️  폰트를 찾을 수 없어 기본 폰트 사용: {Path(font_file).name}")
     
+    # FFmpeg drawtext를 위한 텍스트 이스케이프 처리
+    # 특수문자, 이모지, 한글 등 모든 문자를 안전하게 처리
+    def escape_text_for_ffmpeg(text):
+        """FFmpeg drawtext 필터용 텍스트 이스케이프
+        
+        FFmpeg의 drawtext 필터는 특수 문자들을 이스케이프해야 합니다:
+        - 백슬래시(\\): FFmpeg 이스케이프 문자
+        - 작은따옴표('): 필터 문자열 구분자
+        - 콜론(:): 파라미터 구분자
+        - 특수 문자: %는 strftime 형식 문자
+        
+        한글과 이모지는 UTF-8로 그대로 전달됩니다.
+        """
+        # 1. 백슬래시를 먼저 처리 (다른 이스케이프의 기초)
+        text = text.replace("\\", "\\\\\\\\")
+        
+        # 2. 콜론과 퍼센트는 백슬래시로 이스케이프
+        text = text.replace(":", "\\:")
+        text = text.replace("%", "\\%")
+        
+        # 3. 작은따옴표는 닫고-이스케이프-열기 방식으로 처리
+        # FFmpeg 필터에서 작은따옴표를 포함하려면: text='hello'world' → text='hello'\\''world'
+        text = text.replace("'", "'\\\\\\\\''")
+        
+        return text
+    
+    # 자막 텍스트 이스케이프 처리
+    escaped_text = escape_text_for_ffmpeg(subtitle_text)
+    
     subtitle_style = (
         f"drawtext="
-        f"text='{subtitle_text}':"
+        f"text='{escaped_text}':"
         f"fontfile={font_file}:"
         f"fontsize=70:"  # 크기 70으로 증가 (가독성 향상)
         f"fontcolor=white:"
