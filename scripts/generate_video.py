@@ -118,7 +118,7 @@ def log_generation(location, result):
 def main():
     """메인 실행 함수"""
     print("="*60)
-    print("🌍 AI 여행 쇼츠 자동 생성기")
+    print("AI 여행 쇼츠 자동 생성기")
     print("="*60)
     
     # 장소 로드
