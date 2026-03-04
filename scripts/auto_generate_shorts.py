@@ -110,7 +110,7 @@ def main():
     """메인 자동화 워크플로우"""
     
     print("\n" + "="*80)
-    print("🌍 AI 여행 쇼츠 완전 자동 생성 시스템")
+    print("글로벌 여행 쇼츠")
     print("="*80)
     print("\n이 시스템은 다음을 자동으로 수행합니다:")
     print("  1️⃣  랜덤 여행지 선택")
@@ -161,7 +161,7 @@ High quality, 4K resolution, travel vlog aesthetic."""
         "music_prompt": music_prompt,
         "created_at": datetime.now().isoformat(),
         "timestamp": timestamp,
-        "subtitle": f"🌍 {location['name_ko']}, {location['country']}"
+        "subtitle": f"{location['name_ko']}, {location['country']}"
     }
     
     metadata_file = OUTPUT_DIR / f"{location['name_ko']}_{timestamp}_metadata.json"
