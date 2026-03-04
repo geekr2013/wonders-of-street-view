@@ -233,15 +233,15 @@ def upload_to_youtube(video_path: Path, location: dict):
     # 설명 생성
     description = f""쇼츠로 만나는 세계 여행
 
-📍 {location['name_ko']} ({location['name_en']})
-🏙️ {location['city']}, {location['country']}
+{location['name_ko']} ({location['name_en']})
+{location['city']}, {location['country']}
 
 {location['description']}
 
-✨ 이 영상은 고품질 무료 영상으로 제작된 여행 콘텐츠입니다.
+이 영상은 고품질 무료 영상으로 제작된 여행 콘텐츠입니다.
 매일 새로운 여행지를 소개합니다!
 
-🔔 구독하고 매일 새로운 여행지를 만나보세요!
+구독하고 매일 새로운 여행지를 만나보세요!
 
 #여행 #travel #{location['country']} #{location['name_ko']} #shorts #세계여행 #온라인여행 #여행지추천
 """
