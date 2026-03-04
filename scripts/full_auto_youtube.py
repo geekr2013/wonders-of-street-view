@@ -228,20 +228,20 @@ def upload_to_youtube(video_path: Path, location: dict):
     """
     
     # 제목 생성
-    title = f"{location['name_ko']} - 글로벌 여행 쇼츠 #{datetime.now().strftime('%m%d')}"
+    title = f"🌍 {location['name_ko']} - AI 여행 쇼츠 #{datetime.now().strftime('%m%d')}"
     
     # 설명 생성
-    description = f""쇼츠로 만나는 세계 여행
+    description = f"""🌍 AI로 만나는 세계 여행
 
-{location['name_ko']} ({location['name_en']})
-{location['city']}, {location['country']}
+📍 {location['name_ko']} ({location['name_en']})
+🏙️ {location['city']}, {location['country']}
 
 {location['description']}
 
-이 영상은 고품질 무료 영상으로 제작된 여행 콘텐츠입니다.
+✨ 이 영상은 고품질 무료 영상으로 제작된 여행 콘텐츠입니다.
 매일 새로운 여행지를 소개합니다!
 
-구독하고 매일 새로운 여행지를 만나보세요!
+🔔 구독하고 매일 새로운 여행지를 만나보세요!
 
 #여행 #travel #{location['country']} #{location['name_ko']} #shorts #세계여행 #온라인여행 #여행지추천
 """
@@ -363,7 +363,7 @@ def main():
     print("\n[ 4단계 ] 최종 쇼츠 합성")
     print("-"*70)
     final_video = OUTPUT_DIR / f"{location['name_ko']}_쇼츠_{timestamp}.mp4"
-    subtitle = f"{location['name_ko']}, {location['country']}"
+    subtitle = f"🌍 {location['name_ko']}, {location['country']}"
     
     if not compose_final_shorts(raw_video, subtitle, final_video):
         sys.exit(1)
