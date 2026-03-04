@@ -110,7 +110,7 @@ def compose_video_with_music_and_subtitle(
 def main():
     """메인 함수"""
     print("\n" + "="*70)
-    print("🎥 AI 여행 쇼츠 - 최종 영상 합성")
+    print("🎥 여행 쇼츠 - 최종 영상 합성")
     print("="*70)
     
     # 입력 파일
