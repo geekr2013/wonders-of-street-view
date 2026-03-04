@@ -228,10 +228,10 @@ def upload_to_youtube(video_path: Path, location: dict):
     """
     
     # 제목 생성
-    title = f"🌍 {location['name_ko']} - AI 여행 쇼츠 #{datetime.now().strftime('%m%d')}"
+    title = f"{location['name_ko']} - 글로벌 여행 쇼츠 #{datetime.now().strftime('%m%d')}"
     
     # 설명 생성
-    description = f"""🌍 AI로 만나는 세계 여행
+    description = f""쇼츠로 만나는 세계 여행
 
 📍 {location['name_ko']} ({location['name_en']})
 🏙️ {location['city']}, {location['country']}
@@ -363,7 +363,7 @@ def main():
     print("\n[ 4단계 ] 최종 쇼츠 합성")
     print("-"*70)
     final_video = OUTPUT_DIR / f"{location['name_ko']}_쇼츠_{timestamp}.mp4"
-    subtitle = f"🌍 {location['name_ko']}, {location['country']}"
+    subtitle = f"{location['name_ko']}, {location['country']}"
     
     if not compose_final_shorts(raw_video, subtitle, final_video):
         sys.exit(1)
