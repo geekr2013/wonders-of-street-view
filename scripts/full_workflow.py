@@ -111,7 +111,7 @@ def generate_ai_video_and_music(location):
 def main():
     """메인 워크플로우"""
     print("\n" + "="*70)
-    print("🌍 AI 여행 쇼츠 자동 생성 시스템")
+    print("글로벌 여행 쇼츠")
     print("="*70)
     
     # 1. 장소 선택
