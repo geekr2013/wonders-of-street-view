@@ -320,7 +320,7 @@ def main():
     """메인 자동화 워크플로우"""
     
     print("\n" + "="*70)
-    print("🌍 완전 자동화 AI 여행 쇼츠 생성 (Pexels 무료 영상 사용)")
+    print("완전 자동화 글로벌 여행 쇼츠 생성 (Pexels 무료 영상 사용)")
     print("="*70)
     
     # Pexels API 키 확인
@@ -371,7 +371,7 @@ def main():
                 
                 # 5. 최종 합성 (자막 추가)
                 final_video = OUTPUT_DIR / f"{location['name_ko']}_쇼츠_{timestamp}.mp4"
-                subtitle = f"🌍 {location['name_ko']}, {location['country']}"
+                subtitle = f"{location['name_ko']}, {location['country']}"
                 
                 if compose_final_shorts(trimmed_video, subtitle, final_video):
                     print("\n" + "="*70)
