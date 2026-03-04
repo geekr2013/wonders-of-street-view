@@ -153,7 +153,7 @@ def upload_to_youtube(video_path, title, description, tags=None):
 
 def create_video_description(location):
     """영상 설명 생성"""
-    description = f"""🌍 AI로 만나는 세계 여행
+    description = f"""쇼츠로 만나는 세계 여행
 
 📍 {location['name_ko']} ({location['name_en']})
 🏙️ {location['city']}, {location['country']}
@@ -163,7 +163,7 @@ def create_video_description(location):
 ✨ 이 영상은 AI 기술로 생성된 여행 콘텐츠입니다.
 매일 새로운 여행지를 소개합니다!
 
-#여행 #travel #{location['country']} #{location['name_ko']} #shorts #AI여행 #세계여행 #온라인여행
+#여행 #travel #{location['country']} #{location['name_ko']} #shorts #쇼츠여행 #세계여행 #온라인여행
 """
     return description
 
@@ -186,7 +186,7 @@ def main():
     # 업로드 시뮬레이션
     video_url = upload_to_youtube(
         video_path="output/test_video.mp4",
-        title=f"🌍 {test_location['name_ko']} - AI 여행 쇼츠",
+        title=f"{test_location['name_ko']} - 글로벌 여행 쇼츠",
         description=create_video_description(test_location),
         tags=["여행", "travel", "shorts", "AI"]
     )
