@@ -28,6 +28,8 @@ BASE_DIR = Path(__file__).parent.parent
 CONFIG_DIR = BASE_DIR / "config"
 OUTPUT_DIR = BASE_DIR / "output"
 LOGS_DIR = BASE_DIR / "logs"
+AUDIO_DIR = BASE_DIR / "assets" / "audio"
+DEFAULT_BGM_PATH = AUDIO_DIR / "background.mp3"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 LOGS_DIR.mkdir(exist_ok=True)
@@ -171,6 +173,32 @@ def search_pexels_video(query: str, api_key: str):
         return None
 
 
+def has_audio_stream(video_path: Path) -> bool:
+    """Return True if input video contains at least one audio stream."""
+    cmd = [
+        "ffprobe",
+        "-v", "error",
+        "-select_streams", "a:0",
+        "-show_entries", "stream=codec_type",
+        "-of", "csv=p=0",
+        str(video_path)
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        return bool(result.stdout.strip())
+    except Exception:
+        return False
+
+
+def resolve_background_music_path() -> Path:
+    """Resolve optional background music file path from env or default."""
+    raw_path = os.getenv("BACKGROUND_MUSIC_FILE", str(DEFAULT_BGM_PATH))
+    candidate = Path(raw_path)
+    if not candidate.is_absolute():
+        candidate = BASE_DIR / candidate
+    return candidate
+
+
 def download_video(url: str, output_path: Path) -> bool:
     """영상 다운로드"""
     try:
@@ -191,91 +219,109 @@ def download_video(url: str, output_path: Path) -> bool:
 
 def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path):
     """Compose final short video (60s, 9:16, subtitle overlay)."""
-    # 자막 스타일 (학교안심 여행체 사용)
-    # 폰트 경로 우선순위: 1) 저장소 폰트, 2) 시스템 폰트, 3) 기본 폰트
     font_paths = [
-        str(BASE_DIR / "fonts" / "HakgyoansimYeohaengOTFR.otf"),  # 저장소 폰트 (1순위)
-        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",  # 나눔고딕 (2순위)
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # 기본 폰트 (3순위)
+        str(BASE_DIR / "fonts" / "HakgyoansimYeohaengOTFR.otf"),
+        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
     ]
-    
-    # 존재하는 첫 번째 폰트 사용
+
     font_file = None
     for font_path in font_paths:
         if Path(font_path).exists():
             font_file = font_path
-            print(f"✅ 폰트 사용: {Path(font_path).name}")
+            print(f"Using font: {Path(font_path).name}")
             break
-    
+
     if not font_file:
-        font_file = font_paths[-1]  # 기본 폰트
-        print(f"⚠️  폰트를 찾을 수 없어 기본 폰트 사용: {Path(font_file).name}")
-    
-    # FFmpeg drawtext를 위한 텍스트 이스케이프 처리
-    # Escape user-facing subtitle text for ffmpeg drawtext.
+        font_file = font_paths[-1]
+        print(f"Fallback font: {Path(font_file).name}")
+
     def escape_text_for_ffmpeg(text):
-        """FFmpeg drawtext 필터용 텍스트 이스케이프
-        
-        FFmpeg의 drawtext 필터는 특수 문자들을 이스케이프해야 합니다:
-        - 백슬래시(\\): FFmpeg 이스케이프 문자
-        - 작은따옴표('): 필터 문자열 구분자
-        - 콜론(:): 파라미터 구분자
-        - 특수 문자: %는 strftime 형식 문자
-        
-        Unicode characters are passed through in UTF-8.
-        """
-        # 1. 백슬래시를 먼저 처리 (다른 이스케이프의 기초)
-        text = text.replace("\\", "\\\\\\\\")
-        
-        # 2. 콜론과 퍼센트는 백슬래시로 이스케이프
+        text = text.replace("\\", "\\\\")
         text = text.replace(":", "\\:")
         text = text.replace("%", "\\%")
-        
-        # 3. 작은따옴표는 닫고-이스케이프-열기 방식으로 처리
-        # FFmpeg 필터에서 작은따옴표를 포함하려면: text='hello'world' → text='hello'\\''world'
-        text = text.replace("'", "'\\\\\\\\''")
-        
+        text = text.replace("'", "'\\\\''")
         return text
-    
-    # 자막 텍스트 이스케이프 처리
+
     escaped_text = escape_text_for_ffmpeg(subtitle_text)
-    
+
     subtitle_style = (
         f"drawtext="
         f"text='{escaped_text}':"
         f"fontfile={font_file}:"
-        f"fontsize=70:"  # 크기 70으로 증가 (가독성 향상)
+        f"fontsize=70:"
         f"fontcolor=white:"
-        f"borderw=4:"  # 테두리 4로 증가
+        f"borderw=4:"
         f"bordercolor=black:"
         f"x=(w-text_w)/2:"
-        f"y=150"  # 위치 조정
+        f"y=150"
     )
-    
-    cmd = [
-        "ffmpeg",
-        "-i", str(video_path),
-        "-filter_complex",
-        f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{subtitle_style}[vout]",
-        "-map", "[vout]",
-        "-map", "0:a?",
-        "-c:v", "libx264",
-        "-preset", "medium",
-        "-crf", "23",
-        "-c:a", "aac",
-        "-b:a", "192k",
-        "-t", "60",  # 60초로 제한
-        "-y",
-        str(output_path)
-    ]
-    
+
+    has_source_audio = has_audio_stream(video_path)
+    bg_music_path = resolve_background_music_path()
+
+    if has_source_audio:
+        print("Source audio detected: using original track")
+        cmd = [
+            "ffmpeg",
+            "-i", str(video_path),
+            "-filter_complex",
+            f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{subtitle_style}[vout]",
+            "-map", "[vout]",
+            "-map", "0:a:0",
+            "-c:v", "libx264",
+            "-preset", "medium",
+            "-crf", "23",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-t", "60",
+            "-y",
+            str(output_path)
+        ]
+    elif bg_music_path.exists():
+        print(f"No source audio: using background music {bg_music_path.name}")
+        cmd = [
+            "ffmpeg",
+            "-i", str(video_path),
+            "-stream_loop", "-1",
+            "-i", str(bg_music_path),
+            "-filter_complex",
+            f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{subtitle_style}[vout]",
+            "-map", "[vout]",
+            "-map", "1:a:0",
+            "-c:v", "libx264",
+            "-preset", "medium",
+            "-crf", "23",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-t", "60",
+            "-shortest",
+            "-y",
+            str(output_path)
+        ]
+    else:
+        print("No source audio and no background music file found; exporting without audio")
+        cmd = [
+            "ffmpeg",
+            "-i", str(video_path),
+            "-filter_complex",
+            f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{subtitle_style}[vout]",
+            "-map", "[vout]",
+            "-c:v", "libx264",
+            "-preset", "medium",
+            "-crf", "23",
+            "-t", "60",
+            "-y",
+            str(output_path)
+        ]
+
     try:
         print("Composing final short...")
         subprocess.run(cmd, capture_output=True, check=True)
-        print("✅ 합성 완료!")
+        print("Composition complete")
         return True
     except Exception as e:
-        print(f"❌ 합성 실패: {e}")
+        print(f"Composition failed: {e}")
         return False
 
 
