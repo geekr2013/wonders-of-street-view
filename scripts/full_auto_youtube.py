@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 완전 자동 유튜브 업로드 시스템
@@ -12,6 +12,7 @@ import random
 import subprocess
 import sys
 import os
+import re
 import requests
 from pathlib import Path
 from datetime import datetime
@@ -34,6 +35,32 @@ LOGS_DIR.mkdir(exist_ok=True)
 # YouTube API 스코프
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 
+COUNTRY_NAME_MAP = {
+    "그리스": "Greece",
+    "독일": "Germany",
+    "몰디브": "Maldives",
+    "미국": "USA",
+    "베트남": "Vietnam",
+    "브라질": "Brazil",
+    "스페인": "Spain",
+    "아르헨티나": "Argentina",
+    "영국": "United Kingdom",
+    "요르단": "Jordan",
+    "이집트": "Egypt",
+    "이탈리아": "Italy",
+    "인도": "India",
+    "인도네시아": "Indonesia",
+    "일본": "Japan",
+    "중국": "China",
+    "캄보디아": "Cambodia",
+    "캐나다": "Canada",
+    "탄자니아": "Tanzania",
+    "페루": "Peru",
+    "프랑스": "France",
+    "프랑스령 폴리네시아": "French Polynesia",
+    "호주": "Australia"
+}
+
 
 def load_locations():
     """장소 데이터베이스 로드"""
@@ -45,6 +72,80 @@ def select_random_location(locations):
     """랜덤 장소 선택"""
     return random.choice(locations)
 
+
+def to_english_country(country_name: str) -> str:
+    """국가명을 영어로 변환 (없으면 원문 유지)"""
+    return COUNTRY_NAME_MAP.get(country_name, country_name)
+
+
+def get_country_en(location: dict) -> str:
+    """location?? ?? ??? ??"""
+    return clean_text(location.get("country_en") or to_english_country(location.get("country", "")))
+
+
+def get_city_en(location: dict) -> str:
+    """location?? ?? ??? ??"""
+    return clean_text(location.get("city_en") or location.get("city", ""))
+
+
+def remove_emoji(text: str) -> str:
+    """이모지/픽토그램 제거"""
+    emoji_pattern = re.compile(
+        "["
+        "\U0001F300-\U0001FAFF"
+        "\u2600-\u27BF"
+        "\uFE0F"
+        "]",
+        flags=re.UNICODE
+    )
+    return emoji_pattern.sub("", text)
+
+
+def clean_text(text: str) -> str:
+    """업로드용 텍스트 정리 (이모지 제거 + 공백 정돈)"""
+    no_emoji = remove_emoji(text)
+    lines = no_emoji.replace("\r\n", "\n").split("\n")
+    cleaned_lines = [re.sub(r"[ \t]+", " ", line).strip() for line in lines]
+    return "\n".join(cleaned_lines).strip()
+
+
+def build_title(location: dict) -> str:
+    """영어 우선, 수동 업로드 느낌의 제목 생성"""
+    country_en = get_country_en(location)
+    title = f"{location['name_en']}, {country_en} | 60s Street View Walk"
+    return clean_text(title)[:100]
+
+
+def build_description(location: dict) -> str:
+    """영어 우선, 과도한 자동화 문구 제거"""
+    country_en = get_country_en(location)
+    city_en = get_city_en(location)
+    lines = [
+        f"Today's destination: {location['name_en']} ({country_en})",
+        "",
+        f"Location: {city_en}, {country_en}",
+        location["description"],
+        "",
+        "Thanks for watching. More travel shorts coming soon.",
+        "",
+        f"#{location['name_en'].replace(' ', '')} #{country_en.replace(' ', '')} #Travel #StreetView #Shorts"
+    ]
+    return clean_text("\n".join(lines))
+
+
+def build_tags(location: dict) -> list:
+    """영어 중심 태그"""
+    country_en = get_country_en(location)
+    return [
+        "travel",
+        "street view",
+        "shorts",
+        "travel shorts",
+        location["name_en"].lower(),
+        country_en.lower(),
+        "walking tour",
+        "world travel"
+    ]
 
 def search_pexels_video(query: str, api_key: str):
     """Pexels API로 영상 검색"""
@@ -226,33 +327,10 @@ def upload_to_youtube(video_path: Path, location: dict):
     Returns:
         video_url: 업로드된 영상 URL 또는 None
     """
-    
-    # 제목 생성
-    title = f"{location['name_ko']} - 글로벌 여행 쇼츠 #{datetime.now().strftime('%m%d')}"
-    
-    # 설명 생성
-    description = f"""쇼츠로 만나는 세계 여행
-
-{location['name_ko']} ({location['name_en']})
-{location['city']}, {location['country']}
-
-{location['description']}
-
-이 영상은 고품질 무료 영상으로 제작된 여행 콘텐츠입니다.
-매일 새로운 여행지를 소개합니다!
-
-구독하고 매일 새로운 여행지를 만나보세요!
-
-#여행 #travel #{location['country']} #{location['name_ko']} #shorts #세계여행 #온라인여행 #여행지추천
-"""
-    
-    # 태그 생성
-    tags = [
-        "여행", "travel", "shorts",
-        location['country'], location['name_ko'],
-        "세계여행", "여행지", "여행지추천",
-        "AI여행", "온라인여행"
-    ]
+    # 제목/설명/태그 생성 (영어 우선 + 이모지 제거)
+    title = build_title(location)
+    description = build_description(location)
+    tags = build_tags(location)
     
     print("\n📺 유튜브 업로드 준비")
     print(f"   제목: {title}")
@@ -339,11 +417,11 @@ def main():
     # 2. Pexels 영상 검색
     print("\n[ 2단계 ] Pexels 영상 검색")
     print("-"*70)
-    search_query = f"{location['name_en']} {location['country']} travel"
+    search_query = f"{location['name_en']} {get_country_en(location)} travel"
     video_url = search_pexels_video(search_query, api_key)
     
     if not video_url:
-        search_query = f"{location['country']} landmark"
+        search_query = f"{get_country_en(location)} landmark"
         video_url = search_pexels_video(search_query, api_key)
     
     if not video_url:
@@ -363,7 +441,7 @@ def main():
     print("\n[ 4단계 ] 최종 쇼츠 합성")
     print("-"*70)
     final_video = OUTPUT_DIR / f"{location['name_ko']}_쇼츠_{timestamp}.mp4"
-    subtitle = f"{location['name_ko']}, {location['country']}"
+    subtitle = clean_text(f"{location['name_en']}, {get_country_en(location)}")
     
     if not compose_final_shorts(raw_video, subtitle, final_video):
         sys.exit(1)
@@ -404,3 +482,7 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+
+

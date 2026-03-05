@@ -6,7 +6,13 @@
     "country": "프랑스",
     "city": "파리",
     "description": "파리의 상징적인 철탑으로 밤에는 아름다운 조명이 켜집니다",
-    "tags": ["랜드마크", "도시", "야경"]
+    "tags": [
+      "랜드마크",
+      "도시",
+      "야경"
+    ],
+    "country_en": "France",
+    "city_en": "Paris"
   },
   {
     "id": 2,
@@ -15,7 +21,13 @@
     "country": "중국",
     "city": "베이징",
     "description": "세계에서 가장 긴 성벽으로 웅장한 역사적 건축물입니다",
-    "tags": ["역사", "산", "건축물"]
+    "tags": [
+      "역사",
+      "산",
+      "건축물"
+    ],
+    "country_en": "China",
+    "city_en": "Beijing"
   },
   {
     "id": 3,
@@ -24,7 +36,13 @@
     "country": "인도",
     "city": "아그라",
     "description": "사랑의 상징인 하얀 대리석 궁전",
-    "tags": ["궁전", "역사", "건축물"]
+    "tags": [
+      "궁전",
+      "역사",
+      "건축물"
+    ],
+    "country_en": "India",
+    "city_en": "Agra"
   },
   {
     "id": 4,
@@ -33,7 +51,13 @@
     "country": "미국",
     "city": "뉴욕",
     "description": "미국 자유의 상징인 거대한 동상",
-    "tags": ["랜드마크", "도시", "해안"]
+    "tags": [
+      "랜드마크",
+      "도시",
+      "해안"
+    ],
+    "country_en": "USA",
+    "city_en": "New York"
   },
   {
     "id": 5,
@@ -42,7 +66,13 @@
     "country": "페루",
     "city": "쿠스코",
     "description": "안데스 산맥의 고대 잉카 유적지",
-    "tags": ["유적", "산", "역사"]
+    "tags": [
+      "유적",
+      "산",
+      "역사"
+    ],
+    "country_en": "Peru",
+    "city_en": "Cusco"
   },
   {
     "id": 6,
@@ -51,7 +81,13 @@
     "country": "이집트",
     "city": "기자",
     "description": "고대 이집트의 신비로운 피라미드",
-    "tags": ["유적", "사막", "역사"]
+    "tags": [
+      "유적",
+      "사막",
+      "역사"
+    ],
+    "country_en": "Egypt",
+    "city_en": "Giza"
   },
   {
     "id": 7,
@@ -60,7 +96,13 @@
     "country": "이탈리아",
     "city": "로마",
     "description": "고대 로마의 원형 경기장",
-    "tags": ["유적", "도시", "역사"]
+    "tags": [
+      "유적",
+      "도시",
+      "역사"
+    ],
+    "country_en": "Italy",
+    "city_en": "Rome"
   },
   {
     "id": 8,
@@ -69,7 +111,13 @@
     "country": "그리스",
     "city": "산토리니",
     "description": "에게해의 아름다운 흰색 건물과 푸른 바다",
-    "tags": ["섬", "해안", "마을"]
+    "tags": [
+      "섬",
+      "해안",
+      "마을"
+    ],
+    "country_en": "Greece",
+    "city_en": "Santorini"
   },
   {
     "id": 9,
@@ -78,7 +126,13 @@
     "country": "캄보디아",
     "city": "시엠립",
     "description": "동남아시아 최대의 사원 유적",
-    "tags": ["사원", "유적", "역사"]
+    "tags": [
+      "사원",
+      "유적",
+      "역사"
+    ],
+    "country_en": "Cambodia",
+    "city_en": "Siem Reap"
   },
   {
     "id": 10,
@@ -87,7 +141,13 @@
     "country": "스페인",
     "city": "바르셀로나",
     "description": "가우디의 미완성 걸작 성당",
-    "tags": ["건축물", "도시", "성당"]
+    "tags": [
+      "건축물",
+      "도시",
+      "성당"
+    ],
+    "country_en": "Spain",
+    "city_en": "Barcelona"
   },
   {
     "id": 11,
@@ -96,7 +156,13 @@
     "country": "독일",
     "city": "바이에른",
     "description": "동화 속 같은 아름다운 성",
-    "tags": ["성", "산", "건축물"]
+    "tags": [
+      "성",
+      "산",
+      "건축물"
+    ],
+    "country_en": "Germany",
+    "city_en": "Bavaria"
   },
   {
     "id": 12,
@@ -105,7 +171,13 @@
     "country": "미국",
     "city": "애리조나",
     "description": "거대한 협곡과 장엄한 자연경관",
-    "tags": ["협곡", "자연", "사막"]
+    "tags": [
+      "협곡",
+      "자연",
+      "사막"
+    ],
+    "country_en": "USA",
+    "city_en": "Arizona"
   },
   {
     "id": 13,
@@ -114,7 +186,13 @@
     "country": "일본",
     "city": "시즈오카",
     "description": "일본의 상징적인 화산",
-    "tags": ["산", "자연", "화산"]
+    "tags": [
+      "산",
+      "자연",
+      "화산"
+    ],
+    "country_en": "Japan",
+    "city_en": "Shizuoka"
   },
   {
     "id": 14,
@@ -123,7 +201,13 @@
     "country": "이탈리아",
     "city": "베네치아",
     "description": "물의 도시 베네치아의 낭만적인 운하",
-    "tags": ["운하", "도시", "건축물"]
+    "tags": [
+      "운하",
+      "도시",
+      "건축물"
+    ],
+    "country_en": "Italy",
+    "city_en": "Venice"
   },
   {
     "id": 15,
@@ -132,7 +216,13 @@
     "country": "요르단",
     "city": "페트라",
     "description": "바위를 깎아 만든 고대 도시",
-    "tags": ["유적", "사막", "역사"]
+    "tags": [
+      "유적",
+      "사막",
+      "역사"
+    ],
+    "country_en": "Jordan",
+    "city_en": "Petra"
   },
   {
     "id": 16,
@@ -141,7 +231,13 @@
     "country": "영국",
     "city": "런던",
     "description": "런던의 상징적인 시계탑",
-    "tags": ["랜드마크", "도시", "건축물"]
+    "tags": [
+      "랜드마크",
+      "도시",
+      "건축물"
+    ],
+    "country_en": "United Kingdom",
+    "city_en": "London"
   },
   {
     "id": 17,
@@ -150,7 +246,13 @@
     "country": "호주",
     "city": "시드니",
     "description": "독특한 조개껍질 모양의 건축물",
-    "tags": ["건축물", "해안", "도시"]
+    "tags": [
+      "건축물",
+      "해안",
+      "도시"
+    ],
+    "country_en": "Australia",
+    "city_en": "Sydney"
   },
   {
     "id": 18,
@@ -159,7 +261,13 @@
     "country": "캐나다",
     "city": "온타리오",
     "description": "웅장한 폭포수의 장관",
-    "tags": ["폭포", "자연", "물"]
+    "tags": [
+      "폭포",
+      "자연",
+      "물"
+    ],
+    "country_en": "Canada",
+    "city_en": "Ontario"
   },
   {
     "id": 19,
@@ -168,7 +276,13 @@
     "country": "영국",
     "city": "솔즈베리",
     "description": "신비로운 선사시대 거석 유적",
-    "tags": ["유적", "역사", "자연"]
+    "tags": [
+      "유적",
+      "역사",
+      "자연"
+    ],
+    "country_en": "United Kingdom",
+    "city_en": "Salisbury"
   },
   {
     "id": 20,
@@ -177,7 +291,13 @@
     "country": "브라질",
     "city": "이과수",
     "description": "세계에서 가장 넓은 폭포",
-    "tags": ["폭포", "자연", "정글"]
+    "tags": [
+      "폭포",
+      "자연",
+      "정글"
+    ],
+    "country_en": "Brazil",
+    "city_en": "Iguazu"
   },
   {
     "id": 21,
@@ -186,7 +306,13 @@
     "country": "베트남",
     "city": "하롱",
     "description": "수천 개의 석회암 섬이 있는 만",
-    "tags": ["바다", "섬", "자연"]
+    "tags": [
+      "바다",
+      "섬",
+      "자연"
+    ],
+    "country_en": "Vietnam",
+    "city_en": "Ha Long"
   },
   {
     "id": 22,
@@ -195,7 +321,13 @@
     "country": "탄자니아",
     "city": "세렝게티",
     "description": "아프리카 야생동물의 천국",
-    "tags": ["사파리", "자연", "초원"]
+    "tags": [
+      "사파리",
+      "자연",
+      "초원"
+    ],
+    "country_en": "Tanzania",
+    "city_en": "Serengeti"
   },
   {
     "id": 23,
@@ -204,7 +336,13 @@
     "country": "몰디브",
     "city": "말레",
     "description": "투명한 바다와 수상 방갈로",
-    "tags": ["섬", "바다", "휴양지"]
+    "tags": [
+      "섬",
+      "바다",
+      "휴양지"
+    ],
+    "country_en": "Maldives",
+    "city_en": "Male"
   },
   {
     "id": 24,
@@ -213,7 +351,13 @@
     "country": "프랑스령 폴리네시아",
     "city": "보라보라",
     "description": "천국 같은 열대 섬",
-    "tags": ["섬", "바다", "휴양지"]
+    "tags": [
+      "섬",
+      "바다",
+      "휴양지"
+    ],
+    "country_en": "French Polynesia",
+    "city_en": "Bora Bora"
   },
   {
     "id": 25,
@@ -222,7 +366,13 @@
     "country": "호주",
     "city": "노던 테리토리",
     "description": "호주 사막의 거대한 붉은 바위",
-    "tags": ["사막", "자연", "바위"]
+    "tags": [
+      "사막",
+      "자연",
+      "바위"
+    ],
+    "country_en": "Australia",
+    "city_en": "Northern Territory"
   },
   {
     "id": 26,
@@ -231,7 +381,13 @@
     "country": "그리스",
     "city": "아테네",
     "description": "고대 그리스 신전 유적",
-    "tags": ["유적", "역사", "도시"]
+    "tags": [
+      "유적",
+      "역사",
+      "도시"
+    ],
+    "country_en": "Greece",
+    "city_en": "Athens"
   },
   {
     "id": 27,
@@ -240,7 +396,13 @@
     "country": "인도네시아",
     "city": "자바",
     "description": "세계 최대의 불교 사원",
-    "tags": ["사원", "유적", "역사"]
+    "tags": [
+      "사원",
+      "유적",
+      "역사"
+    ],
+    "country_en": "Indonesia",
+    "city_en": "Java"
   },
   {
     "id": 28,
@@ -249,7 +411,13 @@
     "country": "탄자니아",
     "city": "킬리만자로",
     "description": "아프리카 최고봉",
-    "tags": ["산", "자연", "설산"]
+    "tags": [
+      "산",
+      "자연",
+      "설산"
+    ],
+    "country_en": "Tanzania",
+    "city_en": "Kilimanjaro"
   },
   {
     "id": 29,
@@ -258,7 +426,13 @@
     "country": "미국",
     "city": "캘리포니아",
     "description": "거대한 화강암과 폭포가 있는 국립공원",
-    "tags": ["공원", "자연", "산"]
+    "tags": [
+      "공원",
+      "자연",
+      "산"
+    ],
+    "country_en": "USA",
+    "city_en": "California"
   },
   {
     "id": 30,
@@ -267,6 +441,12 @@
     "country": "아르헨티나",
     "city": "파타고니아",
     "description": "빙하와 산악이 있는 광활한 지역",
-    "tags": ["빙하", "산", "자연"]
+    "tags": [
+      "빙하",
+      "산",
+      "자연"
+    ],
+    "country_en": "Argentina",
+    "city_en": "Patagonia"
   }
 ]

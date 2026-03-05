@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 유튜브 쇼츠 자동 업로드 스크립트
@@ -152,18 +152,17 @@ def upload_to_youtube(video_path, title, description, tags=None):
 
 
 def create_video_description(location):
-    """영상 설명 생성"""
-    description = f"""쇼츠로 만나는 세계 여행
+    """영어 우선 영상 설명 생성"""
+    country = location.get('country_en') or location.get('country', '')
+    city = location.get('city_en') or location.get('city', '')
+    description = f"""Today's destination: {location['name_en']} ({country})
 
-📍 {location['name_ko']} ({location['name_en']})
-🏙️ {location['city']}, {location['country']}
-
+Location: {city}, {country}
 {location['description']}
 
-✨ 이 영상은 AI 기술로 생성된 여행 콘텐츠입니다.
-매일 새로운 여행지를 소개합니다!
+Thanks for watching. More travel shorts coming soon.
 
-#여행 #travel #{location['country']} #{location['name_ko']} #shorts #쇼츠여행 #세계여행 #온라인여행
+#{location['name_en'].replace(' ', '')} #Travel #StreetView #Shorts
 """
     return description
 
@@ -197,3 +196,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
