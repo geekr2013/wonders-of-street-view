@@ -12,7 +12,8 @@
       "야경"
     ],
     "country_en": "France",
-    "city_en": "Paris"
+    "city_en": "Paris",
+    "description_en": "A cinematic street-level look at Eiffel Tower in Paris, France."
   },
   {
     "id": 2,
@@ -27,7 +28,8 @@
       "건축물"
     ],
     "country_en": "China",
-    "city_en": "Beijing"
+    "city_en": "Beijing",
+    "description_en": "A quick travel short around Great Wall of China, one minute at a time."
   },
   {
     "id": 3,
@@ -42,7 +44,8 @@
       "건축물"
     ],
     "country_en": "India",
-    "city_en": "Agra"
+    "city_en": "Agra",
+    "description_en": "A visual walk through Taj Mahal in Agra, India."
   },
   {
     "id": 4,
@@ -57,7 +60,8 @@
       "해안"
     ],
     "country_en": "USA",
-    "city_en": "New York"
+    "city_en": "New York",
+    "description_en": "A short street view feature from Statue of Liberty (USA)."
   },
   {
     "id": 5,
@@ -72,7 +76,8 @@
       "역사"
     ],
     "country_en": "Peru",
-    "city_en": "Cusco"
+    "city_en": "Cusco",
+    "description_en": "A compact travel snapshot of Machu Picchu in Cusco."
   },
   {
     "id": 6,
@@ -87,7 +92,8 @@
       "역사"
     ],
     "country_en": "Egypt",
-    "city_en": "Giza"
+    "city_en": "Giza",
+    "description_en": "A one-minute destination cut from Pyramids of Giza, Egypt."
   },
   {
     "id": 7,
@@ -102,7 +108,8 @@
       "역사"
     ],
     "country_en": "Italy",
-    "city_en": "Rome"
+    "city_en": "Rome",
+    "description_en": "A cinematic street-level look at Colosseum in Rome, Italy."
   },
   {
     "id": 8,
@@ -117,7 +124,8 @@
       "마을"
     ],
     "country_en": "Greece",
-    "city_en": "Santorini"
+    "city_en": "Santorini",
+    "description_en": "A quick travel short around Santorini, one minute at a time."
   },
   {
     "id": 9,
@@ -132,7 +140,8 @@
       "역사"
     ],
     "country_en": "Cambodia",
-    "city_en": "Siem Reap"
+    "city_en": "Siem Reap",
+    "description_en": "A visual walk through Angkor Wat in Siem Reap, Cambodia."
   },
   {
     "id": 10,
@@ -147,7 +156,8 @@
       "성당"
     ],
     "country_en": "Spain",
-    "city_en": "Barcelona"
+    "city_en": "Barcelona",
+    "description_en": "A short street view feature from Sagrada Familia (Spain)."
   },
   {
     "id": 11,
@@ -162,7 +172,8 @@
       "건축물"
     ],
     "country_en": "Germany",
-    "city_en": "Bavaria"
+    "city_en": "Bavaria",
+    "description_en": "A compact travel snapshot of Neuschwanstein Castle in Bavaria."
   },
   {
     "id": 12,
@@ -177,7 +188,8 @@
       "사막"
     ],
     "country_en": "USA",
-    "city_en": "Arizona"
+    "city_en": "Arizona",
+    "description_en": "A one-minute destination cut from Grand Canyon, USA."
   },
   {
     "id": 13,
@@ -192,7 +204,8 @@
       "화산"
     ],
     "country_en": "Japan",
-    "city_en": "Shizuoka"
+    "city_en": "Shizuoka",
+    "description_en": "A cinematic street-level look at Mount Fuji in Shizuoka, Japan."
   },
   {
     "id": 14,
@@ -207,7 +220,8 @@
       "건축물"
     ],
     "country_en": "Italy",
-    "city_en": "Venice"
+    "city_en": "Venice",
+    "description_en": "A quick travel short around Venice Canals, one minute at a time."
   },
   {
     "id": 15,
@@ -222,7 +236,8 @@
       "역사"
     ],
     "country_en": "Jordan",
-    "city_en": "Petra"
+    "city_en": "Petra",
+    "description_en": "A visual walk through Petra in Petra, Jordan."
   },
   {
     "id": 16,
@@ -237,7 +252,8 @@
       "건축물"
     ],
     "country_en": "United Kingdom",
-    "city_en": "London"
+    "city_en": "London",
+    "description_en": "A short street view feature from Big Ben (United Kingdom)."
   },
   {
     "id": 17,
@@ -252,7 +268,8 @@
       "도시"
     ],
     "country_en": "Australia",
-    "city_en": "Sydney"
+    "city_en": "Sydney",
+    "description_en": "A compact travel snapshot of Sydney Opera House in Sydney."
   },
   {
     "id": 18,
@@ -267,7 +284,8 @@
       "물"
     ],
     "country_en": "Canada",
-    "city_en": "Ontario"
+    "city_en": "Ontario",
+    "description_en": "A one-minute destination cut from Niagara Falls, Canada."
   },
   {
     "id": 19,
@@ -282,7 +300,8 @@
       "자연"
     ],
     "country_en": "United Kingdom",
-    "city_en": "Salisbury"
+    "city_en": "Salisbury",
+    "description_en": "A cinematic street-level look at Stonehenge in Salisbury, United Kingdom."
   },
   {
     "id": 20,
@@ -297,7 +316,8 @@
       "정글"
     ],
     "country_en": "Brazil",
-    "city_en": "Iguazu"
+    "city_en": "Iguazu",
+    "description_en": "A quick travel short around Iguazu Falls, one minute at a time."
   },
   {
     "id": 21,
@@ -312,7 +332,8 @@
       "자연"
     ],
     "country_en": "Vietnam",
-    "city_en": "Ha Long"
+    "city_en": "Ha Long",
+    "description_en": "A visual walk through Ha Long Bay in Ha Long, Vietnam."
   },
   {
     "id": 22,
@@ -327,7 +348,8 @@
       "초원"
     ],
     "country_en": "Tanzania",
-    "city_en": "Serengeti"
+    "city_en": "Serengeti",
+    "description_en": "A short street view feature from Serengeti (Tanzania)."
   },
   {
     "id": 23,
@@ -342,7 +364,8 @@
       "휴양지"
     ],
     "country_en": "Maldives",
-    "city_en": "Male"
+    "city_en": "Male",
+    "description_en": "A compact travel snapshot of Maldives in Male."
   },
   {
     "id": 24,
@@ -357,7 +380,8 @@
       "휴양지"
     ],
     "country_en": "French Polynesia",
-    "city_en": "Bora Bora"
+    "city_en": "Bora Bora",
+    "description_en": "A one-minute destination cut from Bora Bora, French Polynesia."
   },
   {
     "id": 25,
@@ -372,7 +396,8 @@
       "바위"
     ],
     "country_en": "Australia",
-    "city_en": "Northern Territory"
+    "city_en": "Northern Territory",
+    "description_en": "A cinematic street-level look at Uluru in Northern Territory, Australia."
   },
   {
     "id": 26,
@@ -387,7 +412,8 @@
       "도시"
     ],
     "country_en": "Greece",
-    "city_en": "Athens"
+    "city_en": "Athens",
+    "description_en": "A quick travel short around Acropolis, one minute at a time."
   },
   {
     "id": 27,
@@ -402,7 +428,8 @@
       "역사"
     ],
     "country_en": "Indonesia",
-    "city_en": "Java"
+    "city_en": "Java",
+    "description_en": "A visual walk through Borobudur in Java, Indonesia."
   },
   {
     "id": 28,
@@ -417,7 +444,8 @@
       "설산"
     ],
     "country_en": "Tanzania",
-    "city_en": "Kilimanjaro"
+    "city_en": "Kilimanjaro",
+    "description_en": "A short street view feature from Mount Kilimanjaro (Tanzania)."
   },
   {
     "id": 29,
@@ -432,7 +460,8 @@
       "산"
     ],
     "country_en": "USA",
-    "city_en": "California"
+    "city_en": "California",
+    "description_en": "A compact travel snapshot of Yosemite in California."
   },
   {
     "id": 30,
@@ -447,7 +476,8 @@
       "자연"
     ],
     "country_en": "Argentina",
-    "city_en": "Patagonia"
+    "city_en": "Patagonia",
+    "description_en": "A one-minute destination cut from Patagonia, Argentina."
   },
   {
     "name_ko": "?? ???",
@@ -462,7 +492,8 @@
     ],
     "country_en": "United Arab Emirates",
     "city_en": "Dubai",
-    "id": 31
+    "id": 31,
+    "description_en": "A cinematic street-level look at Burj Khalifa in Dubai, United Arab Emirates."
   },
   {
     "name_ko": "??????",
@@ -477,7 +508,8 @@
     ],
     "country_en": "Iran",
     "city_en": "Shiraz",
-    "id": 32
+    "id": 32,
+    "description_en": "A quick travel short around Persepolis, one minute at a time."
   },
   {
     "name_ko": "????? ? ???",
@@ -492,7 +524,8 @@
     ],
     "country_en": "Brazil",
     "city_en": "Rio de Janeiro",
-    "id": 33
+    "id": 33,
+    "description_en": "A visual walk through Christ the Redeemer in Rio de Janeiro, Brazil."
   },
   {
     "name_ko": "?????",
@@ -507,7 +540,8 @@
     ],
     "country_en": "Mexico",
     "city_en": "Yucatan",
-    "id": 34
+    "id": 34,
+    "description_en": "A short street view feature from Chichen Itza (Mexico)."
   },
   {
     "name_ko": "??? ????",
@@ -522,7 +556,8 @@
     ],
     "country_en": "Bolivia",
     "city_en": "Uyuni",
-    "id": 35
+    "id": 35,
+    "description_en": "A compact travel snapshot of Salar de Uyuni in Uyuni."
   },
   {
     "name_ko": "?? ???",
@@ -537,7 +572,8 @@
     ],
     "country_en": "United Kingdom",
     "city_en": "York",
-    "id": 36
+    "id": 36,
+    "description_en": "A one-minute destination cut from York Minster, United Kingdom."
   },
   {
     "name_ko": "???? ????",
@@ -552,7 +588,8 @@
     ],
     "country_en": "Norway",
     "city_en": "Bergen",
-    "id": 37
+    "id": 37,
+    "description_en": "A cinematic street-level look at Norwegian Fjords in Bergen, Norway."
   },
   {
     "name_ko": "???? ??? ???",
@@ -567,7 +604,8 @@
     ],
     "country_en": "New Zealand",
     "city_en": "Fiordland",
-    "id": 38
+    "id": 38,
+    "description_en": "A quick travel short around Milford Sound, one minute at a time."
   },
   {
     "name_ko": "??? ???",
@@ -582,7 +620,8 @@
     ],
     "country_en": "South Africa",
     "city_en": "Cape Town",
-    "id": 39
+    "id": 39,
+    "description_en": "A visual walk through Table Mountain in Cape Town, South Africa."
   },
   {
     "name_ko": "??? ? ???",
@@ -597,7 +636,8 @@
     ],
     "country_en": "Chile",
     "city_en": "Easter Island",
-    "id": 40
+    "id": 40,
+    "description_en": "A short street view feature from Moai of Easter Island (Chile)."
   },
   {
     "name_ko": "?? ???",
@@ -612,7 +652,8 @@
     ],
     "country_en": "Myanmar",
     "city_en": "Bagan",
-    "id": 41
+    "id": 41,
+    "description_en": "A compact travel snapshot of Bagan Temples in Bagan."
   },
   {
     "name_ko": "??? ?",
@@ -627,7 +668,8 @@
     ],
     "country_en": "Czech Republic",
     "city_en": "Prague",
-    "id": 42
+    "id": 42,
+    "description_en": "A one-minute destination cut from Prague Castle, Czech Republic."
   },
   {
     "name_ko": "?? ??",
@@ -642,7 +684,8 @@
     ],
     "country_en": "Iceland",
     "city_en": "Grindavik",
-    "id": 43
+    "id": 43,
+    "description_en": "A cinematic street-level look at Blue Lagoon in Grindavik, Iceland."
   },
   {
     "name_ko": "?? ???",
@@ -657,7 +700,8 @@
     ],
     "country_en": "Czech Republic",
     "city_en": "Prague",
-    "id": 44
+    "id": 44,
+    "description_en": "A quick travel short around Charles Bridge, one minute at a time."
   },
   {
     "name_ko": "????",
@@ -672,7 +716,8 @@
     ],
     "country_en": "Austria",
     "city_en": "Hallstatt",
-    "id": 45
+    "id": 45,
+    "description_en": "A visual walk through Hallstatt in Hallstatt, Austria."
   },
   {
     "name_ko": "????",
@@ -687,7 +732,8 @@
     ],
     "country_en": "France",
     "city_en": "Normandy",
-    "id": 46
+    "id": 46,
+    "description_en": "A short street view feature from Mont Saint-Michel (France)."
   },
   {
     "name_ko": "?????",
@@ -702,7 +748,8 @@
     ],
     "country_en": "Turkey",
     "city_en": "Goreme",
-    "id": 47
+    "id": 47,
+    "description_en": "A compact travel snapshot of Cappadocia in Goreme."
   },
   {
     "name_ko": "????",
@@ -717,7 +764,8 @@
     ],
     "country_en": "Greece",
     "city_en": "Kalambaka",
-    "id": 48
+    "id": 48,
+    "description_en": "A one-minute destination cut from Meteora, Greece."
   },
   {
     "name_ko": "??? ??",
@@ -732,7 +780,8 @@
     ],
     "country_en": "Italy",
     "city_en": "Amalfi",
-    "id": 49
+    "id": 49,
+    "description_en": "A cinematic street-level look at Amalfi Coast in Amalfi, Italy."
   },
   {
     "name_ko": "?????",
@@ -747,7 +796,8 @@
     ],
     "country_en": "Iceland",
     "city_en": "Reykjavik",
-    "id": 50
+    "id": 50,
+    "description_en": "A quick travel short around Reykjavik, one minute at a time."
   },
   {
     "name_ko": "????",
@@ -762,7 +812,8 @@
     ],
     "country_en": "Sri Lanka",
     "city_en": "Sigiriya",
-    "id": 51
+    "id": 51,
+    "description_en": "A visual walk through Sigiriya in Sigiriya, Sri Lanka."
   },
   {
     "name_ko": "?? ??",
@@ -777,7 +828,8 @@
     ],
     "country_en": "Venezuela",
     "city_en": "Canaima",
-    "id": 52
+    "id": 52,
+    "description_en": "A short street view feature from Angel Falls (Venezuela)."
   },
   {
     "name_ko": "??? ???",
@@ -792,7 +844,8 @@
     ],
     "country_en": "Italy",
     "city_en": "Florence",
-    "id": 53
+    "id": 53,
+    "description_en": "A compact travel snapshot of Florence Duomo in Florence."
   },
   {
     "name_ko": "?????? ????",
@@ -807,7 +860,8 @@
     ],
     "country_en": "Croatia",
     "city_en": "Dubrovnik",
-    "id": 54
+    "id": 54,
+    "description_en": "A one-minute destination cut from Dubrovnik Old Town, Croatia."
   },
   {
     "name_ko": "??? ??",
@@ -822,7 +876,8 @@
     ],
     "country_en": "Peru",
     "city_en": "Nazca",
-    "id": 55
+    "id": 55,
+    "description_en": "A cinematic street-level look at Nazca Lines in Nazca, Peru."
   },
   {
     "name_ko": "??????",
@@ -837,7 +892,8 @@
     ],
     "country_en": "Mexico",
     "city_en": "Mexico City",
-    "id": 56
+    "id": 56,
+    "description_en": "A quick travel short around Teotihuacan, one minute at a time."
   },
   {
     "name_ko": "???",
@@ -852,7 +908,8 @@
     ],
     "country_en": "China",
     "city_en": "Beijing",
-    "id": 57
+    "id": 57,
+    "description_en": "A visual walk through Forbidden City in Beijing, China."
   },
   {
     "name_ko": "???",
@@ -867,7 +924,8 @@
     ],
     "country_en": "Vietnam",
     "city_en": "Hoi An",
-    "id": 58
+    "id": 58,
+    "description_en": "A short street view feature from Hoi An Ancient Town (Vietnam)."
   },
   {
     "name_ko": "?? ??? ????",
@@ -882,7 +940,8 @@
     ],
     "country_en": "Tanzania",
     "city_en": "Moshi",
-    "id": 59
+    "id": 59,
+    "description_en": "A compact travel snapshot of Kilimanjaro National Park in Moshi."
   },
   {
     "name_ko": "????",
@@ -897,6 +956,7 @@
     ],
     "country_en": "United Kingdom",
     "city_en": "Isle of Skye",
-    "id": 60
+    "id": 60,
+    "description_en": "A one-minute destination cut from Fairy Pools, United Kingdom."
   }
 ]

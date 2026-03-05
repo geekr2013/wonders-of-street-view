@@ -1,44 +1,46 @@
 ﻿# Wonders of Street View
 
-Daily travel shorts pipeline that builds a 60-second vertical video from free footage and uploads it to YouTube.
+Daily travel shorts pipeline for YouTube growth and monetization readiness.
 
-## Overview
-- Picks a random destination from `config/locations.json` (now **60 locations**)
-- Searches free stock video via Pexels API
-- Creates a Shorts-ready 1080x1920 video with subtitle overlay
-- Audio behavior:
-  - If source video has audio: keep it
-  - If source video has no audio: use `assets/audio/background.mp3` (or `BACKGROUND_MUSIC_FILE`)
-  - If neither exists: export without audio
-- Uploads to YouTube via YouTube Data API
-- Cleans temporary files and stores metadata/log artifacts
+## What This Version Improves
+- English-first titles/descriptions/tags
+- Multi-template packaging to reduce repetitive patterns
+- Series-based content strategy:
+  - `City Walks`
+  - `History Trails`
+  - `Nature Escapes`
+- Source attribution logging (`logs/source_log.jsonl`)
+- 60 destinations in `config/locations.json`
 
 ## Active Workflow
-- File: `.github/workflows/youtube-auto-upload.yml`
+- `.github/workflows/youtube-auto-upload.yml`
 - Schedule: `0 0 * * *` (daily 00:00 UTC / 09:00 KST)
-- Manual run: `workflow_dispatch` enabled
+- Manual run: enabled (`workflow_dispatch`)
 
 ## Required Secrets
 - `PEXELS_API_KEY`
 - `YOUTUBE_TOKEN_BASE64`
 
-## Optional Settings
+## Optional Environment Variables
 - `BACKGROUND_MUSIC_FILE`
-  - Relative or absolute path to background music mp3
+  - Fallback music path if source video has no audio
   - Default: `assets/audio/background.mp3`
 
-## Local Run
-```bash
-python3 scripts/full_auto_youtube.py
-```
+## Content and Attribution Outputs
+- Final video: `output/*_short_*.mp4`
+- Metadata JSON: `output/*_metadata.json`
+- Source log: `logs/source_log.jsonl`
 
-## Project Structure
-- `config/locations.json` : destination database (60 records)
-- `scripts/full_auto_youtube.py` : end-to-end generation + upload
-- `assets/audio/README.md` : background music setup
-- `.github/workflows/youtube-auto-upload.yml` : scheduler workflow
-- `docs/DOCS_INDEX.md` : documentation map
+## Core Script
+- `scripts/full_auto_youtube.py`
+  - Select location
+  - Build series-aware metadata package
+  - Fetch source video from Pexels
+  - Compose short with overlay hook + subtitle
+  - Keep source audio or apply fallback BGM
+  - Upload to YouTube
+  - Save metadata and source attribution log
 
 ## Notes
-- Legacy workflows are stored in `workflows/legacy/`.
-- Older docs are archived in `docs/archive/`.
+- Legacy workflows are in `workflows/legacy/`.
+- Archived docs are in `docs/archive/`.
