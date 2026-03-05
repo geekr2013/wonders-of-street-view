@@ -1,4 +1,4 @@
-name: 🌍 Daily AI Travel Shorts - Video Generation Only
+name: 🌍 Daily Travel Shorts - Video Generation Only
 
 # ⚠️ 주의: 이 워크플로우는 영상만 생성합니다 (유튜브 업로드 없음)
 # 유튜브 자동 업로드를 원하면 `youtube-auto-upload.yml` 워크플로우를 사용하세요
@@ -16,7 +16,7 @@ env:
 
 jobs:
   generate-travel-shorts:
-    name: 🎬 AI 여행 쇼츠 자동 생성
+    name: 🎬 여행 쇼츠 자동 생성
     runs-on: ubuntu-latest
     timeout-minutes: 30
     
@@ -57,7 +57,7 @@ jobs:
         python3 scripts/cleanup_old_videos.py
     
     # 7. Pexels 무료 영상으로 쇼츠 생성
-    - name: 🌍 AI 여행 쇼츠 자동 생성
+    - name: 🌍 여행 쇼츠 자동 생성
       env:
         PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
       run: |
@@ -67,7 +67,7 @@ jobs:
     - name: 💾 정리된 저장소 커밋
       if: success()
       run: |
-        git config user.name "AI Travel Shorts Bot"
+        git config user.name "Travel Shorts Studio"
         git config user.email "cogurrl@gmail.com"
         git add -A
         git diff-index --quiet HEAD || git commit -m "chore: 오래된 영상 자동 정리 (${GITHUB_RUN_NUMBER})"
@@ -105,9 +105,9 @@ jobs:
         server_port: 587
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "🎉 AI 여행 쇼츠 생성 완료 - ${{ github.run_number }}"
+        subject: "🎉 여행 쇼츠 생성 완료 - ${{ github.run_number }}"
         to: ${{ secrets.RECIPIENT_EMAIL }}
-        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
+        from: Travel Shorts Studio <${{ secrets.SMTP_USERNAME }}>
         html_body: |
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2196F3;">🌍 새로운 여행 쇼츠가 생성되었습니다!</h2>
@@ -143,7 +143,7 @@ jobs:
             <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
             
             <p style="color: #666; font-size: 12px; text-align: center;">
-              이 메일은 AI 여행 쇼츠 자동 생성 시스템에서 발송되었습니다.<br>
+              이 메일은 여행 쇼츠 자동 생성 시스템에서 발송되었습니다.<br>
               매일 새로운 여행지의 영상이 자동으로 생성됩니다.
             </p>
           </div>
@@ -157,9 +157,9 @@ jobs:
         server_port: 587
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "❌ AI 여행 쇼츠 생성 실패 - ${{ github.run_number }}"
+        subject: "❌ 여행 쇼츠 생성 실패 - ${{ github.run_number }}"
         to: ${{ secrets.RECIPIENT_EMAIL }}
-        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
+        from: Travel Shorts Studio <${{ secrets.SMTP_USERNAME }}>
         html_body: |
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #f44336;">❌ 영상 생성에 실패했습니다</h2>
@@ -189,7 +189,7 @@ jobs:
       if: always()
       run: |
         echo "================================"
-        echo "🌍 AI 여행 쇼츠 생성 완료"
+        echo "🌍 여행 쇼츠 생성 완료"
         echo "================================"
         echo "실행 번호: ${{ github.run_number }}"
         echo "상태: ${{ job.status }}"

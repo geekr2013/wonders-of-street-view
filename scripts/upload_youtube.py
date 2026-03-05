@@ -1,8 +1,8 @@
 ﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-유튜브 쇼츠 자동 업로드 스크립트
-생성된 영상을 유튜브에 자동으로 업로드합니다.
+YouTube Shorts upload helper script.
+Uploads generated videos to YouTube.
 """
 
 import os
@@ -152,13 +152,14 @@ def upload_to_youtube(video_path, title, description, tags=None):
 
 
 def create_video_description(location):
-    """영어 우선 영상 설명 생성"""
+    """Create English-first video description"""
     country = location.get('country_en') or location.get('country', '')
     city = location.get('city_en') or location.get('city', '')
+    body_text = location.get('description_en') or f"A short travel clip around {location['name_en']}."
     description = f"""Today's destination: {location['name_en']} ({country})
 
 Location: {city}, {country}
-{location['description']}
+{body_text}
 
 Thanks for watching. More travel shorts coming soon.
 
@@ -166,33 +167,32 @@ Thanks for watching. More travel shorts coming soon.
 """
     return description
 
-
 def main():
-    """테스트용 메인 함수"""
+    """Test helper"""
     print("="*60)
-    print("📺 유튜브 업로드 테스트")
+    print("YouTube upload test")
     print("="*60)
-    
-    # 테스트 데이터
+
     test_location = {
-        "name_ko": "에펠탑",
+        "name_ko": "???",
         "name_en": "Eiffel Tower",
-        "country": "프랑스",
-        "city": "파리",
-        "description": "파리의 상징적인 철탑으로 밤에는 아름다운 조명이 켜집니다"
+        "country": "???",
+        "country_en": "France",
+        "city": "??",
+        "city_en": "Paris",
+        "description": "??? ???? ???? ??? ???? ??? ????",
+        "description_en": "An iconic iron tower in Paris, famous for its night lights."
     }
-    
-    # 업로드 시뮬레이션
+
     video_url = upload_to_youtube(
         video_path="output/test_video.mp4",
-        title=f"{test_location['name_ko']} - 글로벌 여행 쇼츠",
+        title=f"{test_location['name_en']}, {test_location['country_en']} | 60s Street View Walk",
         description=create_video_description(test_location),
-        tags=["여행", "travel", "shorts", "AI"]
+        tags=["travel", "street view", "shorts", "walking tour"]
     )
-    
-    print(f"\n반환된 URL: {video_url}")
-    print("\n✅ 테스트 완료")
 
+    print(f"\nReturned URL: {video_url}")
+    print("\nTest completed")
 
 if __name__ == "__main__":
     main()

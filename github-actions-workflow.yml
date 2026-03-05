@@ -1,4 +1,4 @@
-name: Daily AI Travel Shorts Generator
+name: Daily Travel Shorts Generator
 
 # 매일 오전 9시 (한국 시간 기준 오전 9시 = UTC 0시)
 on:
@@ -46,9 +46,9 @@ jobs:
         server_port: 587
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "🌍 AI 여행 쇼츠 생성 완료"
+        subject: "🌍 여행 쇼츠 생성 완료"
         to: cogurrl@gmail.com
-        from: AI Travel Shorts Bot
+        from: Travel Shorts Studio
         body: |
           새로운 여행 쇼츠가 생성되었습니다!
           
@@ -63,17 +63,17 @@ jobs:
         server_port: 587
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "❌ AI 여행 쇼츠 생성 실패"
+        subject: "❌ 여행 쇼츠 생성 실패"
         to: cogurrl@gmail.com
-        from: AI Travel Shorts Bot
+        from: Travel Shorts Studio
         body: |
           영상 생성에 실패했습니다.
           
           로그를 확인하세요:
           ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-# 참고: AI 영상/음악 생성은 외부 API 키가 필요합니다
+# 참고: 영상/음악 생성은 외부 API 키가 필요합니다
 # GitHub Secrets에 다음을 설정하세요:
 # - SMTP_USERNAME: Gmail 이메일
 # - SMTP_PASSWORD: Gmail 앱 비밀번호
-# - AI_API_KEY: AI 영상 생성 API 키 (RunwayML, Pika Labs 등)
+# - AI_API_KEY: 영상 생성 API 키 (RunwayML, Pika Labs 등)

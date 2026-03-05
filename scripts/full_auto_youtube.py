@@ -1,10 +1,10 @@
 ﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-완전 자동 유튜브 업로드 시스템
-Pexels 영상 생성 → 편집 → 유튜브 자동 업로드
+YouTube upload workflow using Pexels footage.
+Generates a short video and uploads it to YouTube.
 
-GitHub Actions에서 실행 가능
+Compatible with GitHub Actions.
 """
 
 import json
@@ -79,12 +79,12 @@ def to_english_country(country_name: str) -> str:
 
 
 def get_country_en(location: dict) -> str:
-    """location?? ?? ??? ??"""
+    print("Temporary file deleted")
     return clean_text(location.get("country_en") or to_english_country(location.get("country", "")))
 
 
 def get_city_en(location: dict) -> str:
-    """location?? ?? ??? ??"""
+    print("Temporary file deleted")
     return clean_text(location.get("city_en") or location.get("city", ""))
 
 
@@ -117,14 +117,14 @@ def build_title(location: dict) -> str:
 
 
 def build_description(location: dict) -> str:
-    """영어 우선, 과도한 자동화 문구 제거"""
+    """Build an English-first description with a natural tone."""
     country_en = get_country_en(location)
     city_en = get_city_en(location)
     lines = [
         f"Today's destination: {location['name_en']} ({country_en})",
         "",
         f"Location: {city_en}, {country_en}",
-        location["description"],
+        location.get("description_en") or f"A quick street-level view of {location['name_en']}.",
         "",
         "Thanks for watching. More travel shorts coming soon.",
         "",
@@ -190,7 +190,7 @@ def download_video(url: str, output_path: Path) -> bool:
 
 
 def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path):
-    """최종 쇼츠 합성 (60초, 9:16, 한글 자막)"""
+    """Compose final short video (60s, 9:16, subtitle overlay)."""
     # 자막 스타일 (학교안심 여행체 사용)
     # 폰트 경로 우선순위: 1) 저장소 폰트, 2) 시스템 폰트, 3) 기본 폰트
     font_paths = [
@@ -212,7 +212,7 @@ def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path
         print(f"⚠️  폰트를 찾을 수 없어 기본 폰트 사용: {Path(font_file).name}")
     
     # FFmpeg drawtext를 위한 텍스트 이스케이프 처리
-    # 특수문자, 이모지, 한글 등 모든 문자를 안전하게 처리
+    # Escape user-facing subtitle text for ffmpeg drawtext.
     def escape_text_for_ffmpeg(text):
         """FFmpeg drawtext 필터용 텍스트 이스케이프
         
@@ -222,7 +222,7 @@ def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path
         - 콜론(:): 파라미터 구분자
         - 특수 문자: %는 strftime 형식 문자
         
-        한글과 이모지는 UTF-8로 그대로 전달됩니다.
+        Unicode characters are passed through in UTF-8.
         """
         # 1. 백슬래시를 먼저 처리 (다른 이스케이프의 기초)
         text = text.replace("\\", "\\\\\\\\")
@@ -270,7 +270,7 @@ def compose_final_shorts(video_path: Path, subtitle_text: str, output_path: Path
     ]
     
     try:
-        print("🎬 최종 쇼츠 합성 중...")
+        print("Composing final short...")
         subprocess.run(cmd, capture_output=True, check=True)
         print("✅ 합성 완료!")
         return True
@@ -396,89 +396,79 @@ def upload_to_youtube(video_path: Path, location: dict):
 
 
 def main():
-    """메인 워크플로우"""
+    """Main workflow"""
     print("\n" + "="*70)
-    print("완전 자동 유튜브 쇼츠 생성 & 업로드")
+    print("YouTube Shorts generation and upload")
     print("="*70)
-    
-    # Pexels API 키 확인
+
     api_key = os.getenv('PEXELS_API_KEY')
     if not api_key:
-        print("❌ PEXELS_API_KEY 환경변수가 필요합니다")
+        print("PEXELS_API_KEY is required")
         sys.exit(1)
-    
-    # 1. 랜덤 여행지 선택
-    print("\n[ 1단계 ] 랜덤 여행지 선택")
+
+    print("\n[ Step 1 ] Select destination")
     print("-"*70)
     locations = load_locations()
     location = select_random_location(locations)
-    print(f"🎯 선택: {location['name_ko']} ({location['name_en']})")
-    
-    # 2. Pexels 영상 검색
-    print("\n[ 2단계 ] Pexels 영상 검색")
+    print(f"Selected: {location['name_en']} ({get_country_en(location)})")
+
+    print("\n[ Step 2 ] Search Pexels video")
     print("-"*70)
     search_query = f"{location['name_en']} {get_country_en(location)} travel"
     video_url = search_pexels_video(search_query, api_key)
-    
+
     if not video_url:
         search_query = f"{get_country_en(location)} landmark"
         video_url = search_pexels_video(search_query, api_key)
-    
+
     if not video_url:
-        print("❌ 영상을 찾을 수 없습니다")
+        print("No matching video found")
         sys.exit(1)
-    
-    # 3. 영상 다운로드
-    print("\n[ 3단계 ] 영상 다운로드")
+
+    print("\n[ Step 3 ] Download video")
     print("-"*70)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     raw_video = OUTPUT_DIR / f"raw_{timestamp}.mp4"
-    
+
     if not download_video(video_url, raw_video):
         sys.exit(1)
-    
-    # 4. 최종 영상 합성
-    print("\n[ 4단계 ] 최종 쇼츠 합성")
+
+    print("\n[ Step 4 ] Compose final short")
     print("-"*70)
-    final_video = OUTPUT_DIR / f"{location['name_ko']}_쇼츠_{timestamp}.mp4"
+    safe_name = location['name_en'].replace(' ', '_')
+    final_video = OUTPUT_DIR / f"{safe_name}_short_{timestamp}.mp4"
     subtitle = clean_text(f"{location['name_en']}, {get_country_en(location)}")
-    
+
     if not compose_final_shorts(raw_video, subtitle, final_video):
         sys.exit(1)
-    
-    # 5. 유튜브 업로드
-    print("\n[ 5단계 ] 유튜브 업로드")
+
+    print("\n[ Step 5 ] Upload to YouTube")
     print("-"*70)
     video_url = upload_to_youtube(final_video, location)
-    
-    # 6. 정리
-    print("\n[ 6단계 ] 정리")
+
+    print("\n[ Step 6 ] Cleanup")
     print("-"*70)
     raw_video.unlink(missing_ok=True)
-    print("✅ 임시 파일 삭제")
-    
-    # 7. 결과 출력
+    print("Temporary file deleted")
+
     print("\n" + "="*70)
-    print("🎉 완료!")
+    print("Done")
     print("="*70)
-    print(f"📍 장소: {location['name_ko']}")
-    print(f"📹 영상: {final_video}")
+    print(f"Location: {location['name_en']}")
+    print(f"Video: {final_video}")
     if video_url:
-        print(f"🔗 YouTube: {video_url}")
+        print(f"YouTube: {video_url}")
     else:
-        print("⚠️ 유튜브 업로드 실패 (YouTube API 설정 필요)")
-    
-    # 환경변수에 결과 저장 (GitHub Actions에서 사용)
+        print("Upload failed (YouTube API setup required)")
+
     if video_url:
-        # GitHub Actions 출력
         github_output = os.getenv('GITHUB_OUTPUT')
         if github_output:
             with open(github_output, 'a') as f:
                 f.write(f"video_url={video_url}\n")
-                f.write(f"location={location['name_ko']}\n")
-    
-    return 0 if video_url else 1
+                f.write(f"location={location['name_en']}\n")
 
+    return 0 if video_url else 1
 
 if __name__ == "__main__":
     sys.exit(main())

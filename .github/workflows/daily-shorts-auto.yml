@@ -1,62 +1,51 @@
-name: 🌍 Daily AI Travel Shorts - Full Auto
+﻿name: Daily Travel Shorts - Generate Only
 
-# 매일 자동 실행 (한국 시간 오전 9시 = UTC 0시)
-# ⚠️ 이 워크플로우는 비활성화되었습니다 - youtube-auto-upload.yml 사용
+# Disabled schedule: use youtube-auto-upload.yml for production runs.
 on:
-  # schedule:
-  #   - cron: '0 0 * * *'  # 매일 UTC 0시 (한국 오전 9시)
-  workflow_dispatch:  # 수동 실행만 가능 (테스트용)
+  workflow_dispatch:
 
-# 환경 변수 설정
 env:
   TZ: 'Asia/Seoul'
 
 jobs:
-  generate-travel-shorts:
-    name: 🎬 AI 여행 쇼츠 자동 생성
+  generate-travel-short:
+    name: Generate travel short (manual)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
-    # 1. 코드 체크아웃
-    - name: 📦 저장소 체크아웃
+    - name: Checkout repository
       uses: actions/checkout@v4
-    
-    # 2. Python 환경 설정
-    - name: 🐍 Python 3.10 설정
+
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
         cache: 'pip'
-    
-    # 3. 의존성 설치
-    - name: 📚 Python 패키지 설치
+
+    - name: Install Python dependencies
       run: |
         pip install --upgrade pip
         pip install requests python-dotenv
-    
-    # 4. FFmpeg 설치 (영상 편집용)
-    - name: 🎬 FFmpeg 설치
+
+    - name: Install FFmpeg
       run: |
         sudo apt-get update -qq
         sudo apt-get install -y ffmpeg
         ffmpeg -version
-    
-    # 5. 한글 폰트 설치 (자막용)
-    - name: 🔤 한글 폰트 설치
+
+    - name: Install subtitle fonts
       run: |
         sudo apt-get install -y fonts-nanum fonts-nanum-coding
         fc-cache -fv
-    
-    # 6. Pexels 무료 영상으로 쇼츠 생성
-    - name: 🌍 AI 여행 쇼츠 자동 생성
+
+    - name: Generate travel short from Pexels
       env:
         PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
       run: |
         python3 scripts/generate_with_pexels.py
-    
-    # 7. 생성된 영상을 Artifact로 업로드 (다운로드 가능)
-    - name: 📤 생성된 영상 업로드
+
+    - name: Upload generated files as artifact
       if: success()
       uses: actions/upload-artifact@v4
       with:
@@ -65,103 +54,14 @@ jobs:
           output/*.mp4
           output/*_metadata.json
         retention-days: 30
-    
-    # 8. 이메일 알림 전송 (성공)
-    - name: 📧 성공 알림 이메일 전송
-      if: false  # 이메일 비활성화
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "🎉 AI 여행 쇼츠 생성 완료 - ${{ github.run_number }}"
-        to: ${{ secrets.RECIPIENT_EMAIL }}
-        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
-        html_body: |
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2196F3;">🌍 새로운 여행 쇼츠가 생성되었습니다!</h2>
-            
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <h3 style="margin-top: 0;">📊 생성 정보</h3>
-              <p><strong>실행 번호:</strong> #${{ github.run_number }}</p>
-              <p><strong>생성 시간:</strong> ${{ github.event.head_commit.timestamp }}</p>
-              <p><strong>상태:</strong> ✅ 성공</p>
-            </div>
-            
-            <div style="background-color: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <h3 style="color: #4CAF50; margin-top: 0;">📥 영상 다운로드</h3>
-              <p>생성된 영상을 다운로드하려면 아래 링크를 클릭하세요:</p>
-              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" 
-                 style="display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
-                🔗 영상 다운로드 하기
-              </a>
-              <p style="margin-top: 15px; font-size: 12px; color: #666;">
-                "Artifacts" 섹션에서 "travel-shorts-${{ github.run_number }}" 파일을 다운로드하세요.
-              </p>
-            </div>
-            
-            <div style="background-color: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <h3 style="color: #FF9800; margin-top: 0;">📺 다음 단계</h3>
-              <ol>
-                <li>위 링크에서 영상 다운로드</li>
-                <li>유튜브 쇼츠에 업로드</li>
-                <li>수익 확인! 💰</li>
-              </ol>
-            </div>
-            
-            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-            
-            <p style="color: #666; font-size: 12px; text-align: center;">
-              이 메일은 AI 여행 쇼츠 자동 생성 시스템에서 발송되었습니다.<br>
-              매일 새로운 여행지의 영상이 자동으로 생성됩니다.
-            </p>
-          </div>
-    
-    # 9. 이메일 알림 전송 (실패)
-    - name: 📧 실패 알림 이메일 전송
-      if: false  # 이메일 비활성화
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "❌ AI 여행 쇼츠 생성 실패 - ${{ github.run_number }}"
-        to: ${{ secrets.RECIPIENT_EMAIL }}
-        from: AI Travel Shorts Bot <${{ secrets.SMTP_USERNAME }}>
-        html_body: |
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #f44336;">❌ 영상 생성에 실패했습니다</h2>
-            
-            <div style="background-color: #ffebee; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <h3 style="color: #f44336; margin-top: 0;">⚠️ 오류 정보</h3>
-              <p><strong>실행 번호:</strong> #${{ github.run_number }}</p>
-              <p><strong>실패 시간:</strong> ${{ github.event.head_commit.timestamp }}</p>
-            </div>
-            
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <h3 style="margin-top: 0;">🔍 로그 확인</h3>
-              <p>자세한 오류 로그를 확인하려면:</p>
-              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" 
-                 style="display: inline-block; padding: 12px 24px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
-                🔗 로그 보기
-              </a>
-            </div>
-            
-            <p style="color: #666; font-size: 12px; text-align: center; margin-top: 30px;">
-              문제가 지속되면 GitHub Issues에 문의하세요.
-            </p>
-          </div>
-    
-    # 10. 실행 요약 출력
-    - name: 📊 실행 요약
+
+    - name: Job summary
       if: always()
       run: |
         echo "================================"
-        echo "🌍 AI 여행 쇼츠 생성 완료"
+        echo "Travel short generation finished"
         echo "================================"
-        echo "실행 번호: ${{ github.run_number }}"
-        echo "상태: ${{ job.status }}"
-        echo "시간: $(date)"
+        echo "Run number: ${{ github.run_number }}"
+        echo "Status: ${{ job.status }}"
+        echo "Time: $(date)"
         echo "================================"

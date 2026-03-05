@@ -1,83 +1,74 @@
-# 매일 자동 실행 (한국 시간 오전 9시 = UTC 0시)
-"on":
+﻿name: Daily Travel Shorts - YouTube Upload
+
+on:
   schedule:
-    - cron: '0 0 * * *'  # 매일 UTC 0시 (한국 오전 9시)
-  workflow_dispatch:  # 수동 실행도 가능
+    - cron: '0 0 * * *'  # Daily at 09:00 KST
+  workflow_dispatch:
 
 env:
   TZ: 'Asia/Seoul'
 
 jobs:
   generate-and-upload:
-    name: 🎬 AI 여행 쇼츠 생성 및 유튜브 업로드
+    name: Generate and upload travel short
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
-    # 1. 코드 체크아웃
-    - name: 📦 저장소 체크아웃
+    - name: Checkout repository
       uses: actions/checkout@v4
-    
-    # 2. Python 환경 설정
-    - name: 🐍 Python 3.10 설정
+
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    
-    # 3. 의존성 설치
-    - name: 📚 Python 패키지 설치
+
+    - name: Install Python dependencies
       run: |
         pip install --upgrade pip
         pip install requests python-dotenv
         pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
-    
-    # 4. FFmpeg 설치
-    - name: 🎬 FFmpeg 설치
+
+    - name: Install FFmpeg
       run: |
         sudo apt-get update -qq
         sudo apt-get install -y ffmpeg
-    
-    # 5. 한글 폰트 설치
-    - name: 🔤 한글 폰트 설치
+
+    - name: Install subtitle fonts
       run: |
         sudo apt-get install -y fonts-nanum fonts-nanum-coding
         fc-cache -fv
-    
-    # 6. 오래된 영상 자동 정리 (7일 이상)
-    - name: 🧹 오래된 영상 자동 정리
+
+    - name: Clean old files
       run: |
         python3 scripts/cleanup_old_videos.py
-    
-    # 7. 영상 생성 및 유튜브 업로드
-    - name: 🌍 영상 생성 및 유튜브 자동 업로드
+
+    - name: Generate video and upload to YouTube
       id: upload
       env:
         PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         YOUTUBE_TOKEN_BASE64: ${{ secrets.YOUTUBE_TOKEN_BASE64 }}
       run: |
         python3 scripts/full_auto_youtube.py
-    
-    # 8. 업로드 완료 후 로컬 영상 삭제 (저장소 용량 절약)
-    - name: 🗑️ 업로드된 영상 로컬 삭제
+
+    - name: Remove uploaded local mp4 files
       if: success()
       run: |
-        echo "✅ 유튜브 업로드 완료. 로컬 영상 삭제 중..."
+        echo "Upload completed. Removing local video files..."
         rm -f output/*.mp4
-        echo "✅ MP4 파일 삭제 완료"
-        ls -lh output/ || echo "output 폴더가 비었습니다"
-    
-    # 9. 저장소에 변경사항 커밋 (정리된 상태 저장)
-    - name: 💾 정리된 저장소 커밋
+        echo "MP4 cleanup complete"
+        ls -lh output/ || echo "output directory is empty"
+
+    - name: Commit cleanup changes
       if: success()
       run: |
-        git config user.name "AI Travel Shorts Bot"
+        git config user.name "Travel Shorts Studio"
         git config user.email "cogurrl@gmail.com"
         git add -A
-        git diff-index --quiet HEAD || git commit -m "chore: 오래된 영상 자동 정리 (${GITHUB_RUN_NUMBER})"
-        git push || echo "커밋할 변경사항이 없습니다"
-    
-    # 10. 생성된 메타데이터를 Artifact로 백업 (영상은 YouTube에)
-    - name: 📤 메타데이터 백업 (Artifact)
+        git diff-index --quiet HEAD || git commit -m "chore: cleanup old generated files (${GITHUB_RUN_NUMBER})"
+        git push || echo "No changes to commit"
+
+    - name: Upload metadata artifact
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -86,27 +77,25 @@ jobs:
           output/*_metadata.json
           logs/cleanup_*.json
         retention-days: 7
-    
-    # 11. 저장소 용량 확인
-    - name: 📊 저장소 용량 확인
+
+    - name: Show storage usage
       if: always()
       run: |
-        echo "📊 저장소 용량 현황:"
-        du -sh . 2>/dev/null || echo "전체: N/A"
-        du -sh output/ 2>/dev/null || echo "output: 0 MB (정리됨)"
+        echo "Storage usage summary:"
+        du -sh . 2>/dev/null || echo "total: N/A"
+        du -sh output/ 2>/dev/null || echo "output: 0 MB (clean)"
         du -sh logs/ 2>/dev/null || echo "logs: N/A"
         echo ""
-        echo "⚠️ GitHub Free 한도: 500MB"
-        echo "✅ Artifacts는 별도 2GB (자동 정리)"
-    
-    # 12. 실행 요약
-    - name: 📊 실행 요약
+        echo "GitHub Free repository limit: 500MB"
+        echo "Artifacts limit: 2GB (separate from repository storage)"
+
+    - name: Job summary
       if: always()
       run: |
         echo "================================"
-        echo "🌍 AI 여행 쇼츠 자동화 완료"
+        echo "Daily travel short workflow finished"
         echo "================================"
-        echo "실행 번호: ${{ github.run_number }}"
-        echo "상태: ${{ job.status }}"
-        echo "시간: $(date)"
+        echo "Run number: ${{ github.run_number }}"
+        echo "Status: ${{ job.status }}"
+        echo "Time: $(date)"
         echo "================================"
