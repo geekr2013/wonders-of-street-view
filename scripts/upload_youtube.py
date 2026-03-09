@@ -186,7 +186,7 @@ def main():
 
     video_url = upload_to_youtube(
         video_path="output/test_video.mp4",
-        title=f"{test_location['name_en']}, {test_location['country_en']} | 60s Street View Walk",
+        title=f"Walk Through {test_location['name_en']} | {test_location['country_en']}",
         description=create_video_description(test_location),
         tags=["travel", "street view", "shorts", "walking tour"]
     )
