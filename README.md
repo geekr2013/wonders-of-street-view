@@ -3,7 +3,7 @@
 Daily travel shorts pipeline for YouTube growth and monetization readiness.
 
 ## What This Version Improves
-- English-first titles/descriptions/tags
+- English-first titles/descriptions/tags with country flag emoji in title metadata
 - Multi-template packaging to reduce repetitive patterns
 - Series-based content strategy:
   - `City Walks`
@@ -23,8 +23,9 @@ Daily travel shorts pipeline for YouTube growth and monetization readiness.
 
 ## Optional Environment Variables
 - `BACKGROUND_MUSIC_FILE`
-  - Fallback music path if source video has no audio
-  - Default: `assets/audio/background.mp3`
+  - Optional override for a specific fallback track
+  - If not set, random selection from `assets/audio/background_01.mp3` to `background_06.mp3`
+  - If none exist, fallback to `assets/audio/background.mp3`
 
 ## Content and Attribution Outputs
 - Final video: `output/*_short_*.mp4`

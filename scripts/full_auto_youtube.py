@@ -63,6 +63,49 @@ COUNTRY_NAME_MAP = {
     "호주": "Australia",
 }
 
+
+COUNTRY_TO_ISO2 = {
+    "Argentina": "AR",
+    "Australia": "AU",
+    "Austria": "AT",
+    "Bolivia": "BO",
+    "Brazil": "BR",
+    "Cambodia": "KH",
+    "Canada": "CA",
+    "Chile": "CL",
+    "China": "CN",
+    "Croatia": "HR",
+    "Czech Republic": "CZ",
+    "Egypt": "EG",
+    "France": "FR",
+    "French Polynesia": "PF",
+    "Germany": "DE",
+    "Greece": "GR",
+    "Iceland": "IS",
+    "India": "IN",
+    "Indonesia": "ID",
+    "Iran": "IR",
+    "Italy": "IT",
+    "Japan": "JP",
+    "Jordan": "JO",
+    "Maldives": "MV",
+    "Mexico": "MX",
+    "Myanmar": "MM",
+    "New Zealand": "NZ",
+    "Norway": "NO",
+    "Peru": "PE",
+    "South Africa": "ZA",
+    "Spain": "ES",
+    "Sri Lanka": "LK",
+    "Tanzania": "TZ",
+    "Turkey": "TR",
+    "USA": "US",
+    "United Arab Emirates": "AE",
+    "United Kingdom": "GB",
+    "Venezuela": "VE",
+    "Vietnam": "VN",
+}
+
 SERIES_RULES = {
     "City Walks": {
         "keywords": ["도시", "랜드마크", "건축물", "마을", "야경"],
@@ -144,6 +187,12 @@ def clean_text(text: str) -> str:
     return "\n".join(cleaned_lines).strip()
 
 
+def clean_metadata_text(text: str) -> str:
+    lines = text.replace("\r\n", "\n").split("\n")
+    cleaned_lines = [re.sub(r"[ \t]+", " ", line).strip() for line in lines]
+    return "\n".join(cleaned_lines).strip()
+
+
 def load_locations() -> list[dict]:
     with open(CONFIG_DIR / "locations.json", "r", encoding="utf-8") as f:
         return json.load(f)
@@ -163,6 +212,21 @@ def get_country_en(location: dict) -> str:
 
 def get_city_en(location: dict) -> str:
     return clean_text(location.get("city_en") or location.get("city", ""))
+
+
+def country_code_to_flag(country_code: str) -> str:
+    if not country_code or len(country_code) != 2:
+        return ""
+    code = country_code.upper()
+    if not code.isalpha():
+        return ""
+    return chr(ord(code[0]) + 127397) + chr(ord(code[1]) + 127397)
+
+
+def get_country_flag_emoji(location: dict) -> str:
+    country_en = get_country_en(location)
+    iso2 = COUNTRY_TO_ISO2.get(country_en, "")
+    return country_code_to_flag(iso2)
 
 
 def get_description_en(location: dict) -> str:
@@ -230,10 +294,15 @@ def build_content_package(location: dict) -> dict:
         city.lower(),
     ]
 
+    flag = get_country_flag_emoji(location)
+    title_text = clean_metadata_text(title)[:98]
+    if flag:
+        title_text = f"{flag} {title_text}"[:100]
+
     return {
         "series": series,
-        "title": clean_text(title)[:100],
-        "description": clean_text("\n".join(description_lines)),
+        "title": title_text,
+        "description": clean_metadata_text("\n".join(description_lines)),
         "tags": sorted(set(clean_text(t) for t in tags if t)),
         "hook": clean_text(intro),
         "subtitle": clean_text(f"{name}, {country}"),
@@ -309,11 +378,23 @@ def has_audio_stream(video_path: Path) -> bool:
 
 
 def resolve_background_music_path() -> Path:
-    raw_path = os.getenv("BACKGROUND_MUSIC_FILE", str(DEFAULT_BGM_PATH))
-    candidate = Path(raw_path)
-    if not candidate.is_absolute():
-        candidate = BASE_DIR / candidate
-    return candidate
+    env_path = os.getenv("BACKGROUND_MUSIC_FILE", "").strip()
+    if env_path:
+        candidate = Path(env_path)
+        if not candidate.is_absolute():
+            candidate = BASE_DIR / candidate
+        return candidate
+
+    candidates = [
+        AUDIO_DIR / f"background_{i:02d}.mp3"
+        for i in range(1, 7)
+        if (AUDIO_DIR / f"background_{i:02d}.mp3").exists()
+    ]
+
+    if candidates:
+        return random.choice(candidates)
+
+    return DEFAULT_BGM_PATH
 
 
 def compose_final_shorts(video_path: Path, hook_text: str, subtitle_text: str, output_path: Path) -> bool:
